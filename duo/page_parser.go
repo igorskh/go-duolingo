@@ -1,7 +1,6 @@
 package duo
 
 import (
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"regexp"
@@ -13,36 +12,40 @@ type PageParseResult struct {
 	BasePath      string
 }
 
-func getPage(url string) []byte {
+func getPage(url string) ([]byte, error) {
 	resp, err := http.Get(url)
 	if err != nil {
-		panic(err)
+		return []byte{}, err
 	}
 	defer resp.Body.Close()
 	html, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		panic(err)
+		return []byte{}, err
 	}
-	return html
+	return html, nil
 }
 
 // ParseMainPage parses main duolingo page to find vars
-func ParseMainPage(url string) PageParseResult {
-	mainHTML := getPage(url)
+func ParseMainPage(url string) (*PageParseResult, error) {
+	mainHTML, err := getPage(url)
+	if err != nil {
+		return nil, err
+	}
 
 	scriptPathRe := regexp.MustCompile(`<script src="([^\s]+app-.+.js)"><\/script>`)
 	scriptPath := string(scriptPathRe.FindSubmatch(mainHTML)[1])
-	fmt.Println("Parsing script: " + scriptPath)
-
-	scriptCode := getPage("https:" + scriptPath)
+	scriptCode, err := getPage("https:" + scriptPath)
+	if err != nil {
+		return nil, err
+	}
 
 	leaderboardIDRe := regexp.MustCompile(`Le=\"([\S]+)\"`)
 	basePathRe := regexp.MustCompile(`Pn=N\(\"\/([\d-]+)\"`)
 	leaderboardID := leaderboardIDRe.FindSubmatch(scriptCode)
 	basePath := basePathRe.FindSubmatch(scriptCode)
 
-	return PageParseResult{
+	return &PageParseResult{
 		LeaderboardID: string(leaderboardID[1]),
 		BasePath:      string(basePath[1]),
-	}
+	}, nil
 }
