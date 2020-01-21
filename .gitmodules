@@ -1,0 +1,3 @@
+[submodule "duolingo-api"]
+	path = duolingo-api
+	url = git@github.com:igorskh/duolingo-api.git
