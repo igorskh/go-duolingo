@@ -11,7 +11,9 @@ import (
 
 	strfmt "github.com/go-openapi/strfmt"
 
-	"github.com/igorskh/go-duolingo/client/operations"
+	"github.com/igorskh/go-duolingo/client/leaderboards"
+	"github.com/igorskh/go-duolingo/client/login"
+	"github.com/igorskh/go-duolingo/client/users"
 )
 
 // Default duolingo unofficial HTTP client.
@@ -57,7 +59,11 @@ func New(transport runtime.ClientTransport, formats strfmt.Registry) *DuolingoUn
 	cli := new(DuolingoUnofficial)
 	cli.Transport = transport
 
-	cli.Operations = operations.New(transport, formats)
+	cli.Leaderboards = leaderboards.New(transport, formats)
+
+	cli.Login = login.New(transport, formats)
+
+	cli.Users = users.New(transport, formats)
 
 	return cli
 }
@@ -103,7 +109,11 @@ func (cfg *TransportConfig) WithSchemes(schemes []string) *TransportConfig {
 
 // DuolingoUnofficial is a client for duolingo unofficial
 type DuolingoUnofficial struct {
-	Operations *operations.Client
+	Leaderboards *leaderboards.Client
+
+	Login *login.Client
+
+	Users *users.Client
 
 	Transport runtime.ClientTransport
 }
@@ -112,6 +122,10 @@ type DuolingoUnofficial struct {
 func (c *DuolingoUnofficial) SetTransport(transport runtime.ClientTransport) {
 	c.Transport = transport
 
-	c.Operations.SetTransport(transport)
+	c.Leaderboards.SetTransport(transport)
+
+	c.Login.SetTransport(transport)
+
+	c.Users.SetTransport(transport)
 
 }

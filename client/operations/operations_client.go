@@ -25,6 +25,42 @@ type Client struct {
 }
 
 /*
+GetLeaderboardsLeaderboardIDUsersUserID returns user information when not logged in
+
+User information when not logged in.
+*/
+func (a *Client) GetLeaderboardsLeaderboardIDUsersUserID(params *GetLeaderboardsLeaderboardIDUsersUserIDParams, authInfo runtime.ClientAuthInfoWriter) (*GetLeaderboardsLeaderboardIDUsersUserIDOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetLeaderboardsLeaderboardIDUsersUserIDParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "GetLeaderboardsLeaderboardIDUsersUserID",
+		Method:             "GET",
+		PathPattern:        "/leaderboards/{leaderboardID}/users/{userID}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &GetLeaderboardsLeaderboardIDUsersUserIDReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*GetLeaderboardsLeaderboardIDUsersUserIDOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*GetLeaderboardsLeaderboardIDUsersUserIDDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+}
+
+/*
 GetUsers returns user information when not logged in
 
 User information when not logged in.
@@ -57,6 +93,42 @@ func (a *Client) GetUsers(params *GetUsersParams, authInfo runtime.ClientAuthInf
 	}
 	// unexpected success response
 	unexpectedSuccess := result.(*GetUsersDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+}
+
+/*
+GetUsersUserIDSubscriptions returns user subscription list
+
+User subscription.
+*/
+func (a *Client) GetUsersUserIDSubscriptions(params *GetUsersUserIDSubscriptionsParams, authInfo runtime.ClientAuthInfoWriter) (*GetUsersUserIDSubscriptionsOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetUsersUserIDSubscriptionsParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "GetUsersUserIDSubscriptions",
+		Method:             "GET",
+		PathPattern:        "/users/{userID}/subscriptions",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &GetUsersUserIDSubscriptionsReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*GetUsersUserIDSubscriptionsOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*GetUsersUserIDSubscriptionsDefault)
 	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
