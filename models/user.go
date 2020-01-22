@@ -120,6 +120,9 @@ type User struct {
 	// has plus
 	HasPlus bool `json:"hasPlus,omitempty"`
 
+	// health
+	Health *Health `json:"health,omitempty"`
+
 	// id
 	ID int64 `json:"id,omitempty"`
 
@@ -245,6 +248,10 @@ func (m *User) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
+	if err := m.validateHealth(formats); err != nil {
+		res = append(res, err)
+	}
+
 	if err := m.validateLastStreak(formats); err != nil {
 		res = append(res, err)
 	}
@@ -335,6 +342,24 @@ func (m *User) validateCurrentCourse(formats strfmt.Registry) error {
 		if err := m.CurrentCourse.Validate(formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
 				return ve.ValidateName("currentCourse")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *User) validateHealth(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.Health) { // not required
+		return nil
+	}
+
+	if m.Health != nil {
+		if err := m.Health.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("health")
 			}
 			return err
 		}

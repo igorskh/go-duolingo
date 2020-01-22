@@ -13,6 +13,7 @@ import (
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	cr "github.com/go-openapi/runtime/client"
+	"github.com/go-openapi/swag"
 
 	strfmt "github.com/go-openapi/strfmt"
 )
@@ -70,7 +71,7 @@ type GetLeaderboardParams struct {
 	  UserID
 
 	*/
-	UserID string
+	UserID int64
 
 	timeout    time.Duration
 	Context    context.Context
@@ -122,13 +123,13 @@ func (o *GetLeaderboardParams) SetLeaderboardID(leaderboardID string) {
 }
 
 // WithUserID adds the userID to the get leaderboard params
-func (o *GetLeaderboardParams) WithUserID(userID string) *GetLeaderboardParams {
+func (o *GetLeaderboardParams) WithUserID(userID int64) *GetLeaderboardParams {
 	o.SetUserID(userID)
 	return o
 }
 
 // SetUserID adds the userId to the get leaderboard params
-func (o *GetLeaderboardParams) SetUserID(userID string) {
+func (o *GetLeaderboardParams) SetUserID(userID int64) {
 	o.UserID = userID
 }
 
@@ -146,7 +147,7 @@ func (o *GetLeaderboardParams) WriteToRequest(r runtime.ClientRequest, reg strfm
 	}
 
 	// path param userID
-	if err := r.SetPathParam("userID", o.UserID); err != nil {
+	if err := r.SetPathParam("userID", swag.FormatInt64(o.UserID)); err != nil {
 		return err
 	}
 
