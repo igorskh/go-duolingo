@@ -1,60 +1,60 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
-	"time"
 
-	"github.com/go-openapi/runtime"
 	httptransport "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
 	"github.com/igorskh/go-duolingo/client"
-	"github.com/igorskh/go-duolingo/client/users"
 	"github.com/igorskh/go-duolingo/duo"
-	"github.com/igorskh/go-duolingo/models"
 )
 
-func getUser(cl *client.DuolingoUnofficial, auth *runtime.ClientAuthInfoWriter, username string) (*models.User, error) {
-	params := users.NewGetUsersParamsWithTimeout(5 * time.Second)
-	params.SetUsername(username)
-
-	resp, err := cl.Users.GetUsers(params, *auth)
-	if err != nil {
-		return nil, err
-	}
-	return resp.Payload.Users[0], nil
-}
-
-func getSubscriptions(cl *client.DuolingoUnofficial, auth *runtime.ClientAuthInfoWriter, userID int64) (*models.SubscriptionList, error) {
-	params := users.NewGetSubscriptionsParamsWithTimeout(5 * time.Second)
-	params.SetUserID(userID)
-
-	resp, err := cl.Users.GetSubscriptions(params, *auth)
-	if err != nil {
-		return nil, err
-	}
-	return resp.Payload, nil
-}
-
 func main() {
-	token := os.Getenv("DUO_TOKEN")
-	username := os.Getenv("DUO_USERNAME")
-	baseURL := "www.duolingo.com"
+	tokenPtr := flag.String("token", os.Getenv("DUO_TOKEN"), "Duolingo token")
+	usernamePtr := flag.String("username", os.Getenv("DUO_USERNAME"), "Duolingo userID")
+	userIDPtr := flag.Int64("userid", 0, "Duolingo username")
+	baseURLPtr := flag.String("url", "www.duolingo.com", "Duolingo main API URL")
+	lbBaseURLPtr := flag.String("lb-url", "duolingo-leaderboards-prod.duolingo.com", "Duolingo leaderboards API URL")
+	flag.Parse()
+
+	token := *tokenPtr
+	userID := *userIDPtr
+	username := *usernamePtr
+	baseURL := *baseURLPtr
+	lbBaseURL := *lbBaseURLPtr
 
 	pageParseRes, err := duo.ParseMainPage("https://" + baseURL)
 	if err != nil {
 		panic(err)
 	}
+	duoClient := duo.Client{
+		Auth:     httptransport.BearerToken(token),
+		Client:   client.New(httptransport.New(baseURL, pageParseRes.BasePath, nil), strfmt.Default),
+		ClientLB: client.New(httptransport.New(lbBaseURL, "", nil), strfmt.Default),
+	}
 
-	auth := httptransport.BearerToken(token)
-	cl := client.New(httptransport.New(baseURL, pageParseRes.BasePath, nil), strfmt.Default)
+	if userID == 0 {
+		myUser, err := duoClient.GetUser(username)
+		if err != nil {
+			panic(err)
+		}
+		userID = myUser.ID
+	}
 
-	myUser, err := getUser(cl, &auth, username)
+	fields := []string{"id", "courses"}
+	myUser, err := duoClient.GetUser2(userID, fields)
 	if err != nil {
 		panic(err)
 	}
 
-	subs, err := getSubscriptions(cl, &auth, myUser.ID)
+	myLb, err := duoClient.GetLeaderboards(pageParseRes.LeaderboardID, userID)
+	if err != nil {
+		panic(err)
+	}
+
+	subs, err := duoClient.GetSubscriptions(userID)
 	if err != nil {
 		panic(err)
 	}
@@ -62,4 +62,5 @@ func main() {
 	fmt.Println(myUser.ID)
 	fmt.Println(myUser.Courses[0].Crowns)
 	fmt.Println(subs.Subscriptions[0])
+	fmt.Println(myLb.Tier)
 }
