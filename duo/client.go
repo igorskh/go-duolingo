@@ -66,3 +66,16 @@ func (c Client) GetLeaderboards(lbID string, userID int64) (*models.Leaderdoard,
 	}
 	return resp.Payload, nil
 }
+
+// GetXpSummaries get user XP summaries
+func (c Client) GetXpSummaries(userID int64, timezone string) ([]*models.XpSummary, error) {
+	params := users.NewGetXpSummariesParamsWithTimeout(5 * time.Second)
+	params.SetUserID(userID)
+	params.SetTimezone(timezone)
+
+	resp, err := c.Client.Users.GetXpSummaries(params, c.Auth)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Payload.Summaries, nil
+}

@@ -61,7 +61,7 @@ func NewGetSubscriptionsOK() *GetSubscriptionsOK {
 
 /*GetSubscriptionsOK handles this case with default header values.
 
-A Users object.
+A Users SubscriptionList object.
 */
 type GetSubscriptionsOK struct {
 	Payload *models.SubscriptionList
