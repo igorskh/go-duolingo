@@ -22,7 +22,7 @@ func TestUser(t *testing.T) {
 	params := NewGetUsersParamsWithTimeout(defaultTimeout)
 	params.SetUsername("username")
 
-	_, err := cl.GetUsers(params, nil)
+	_, err := cl.GetUsers(params, auth)
 	if err != nil {
 		t.Error(err)
 	}
