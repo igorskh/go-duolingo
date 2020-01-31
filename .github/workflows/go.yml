@@ -18,11 +18,14 @@ jobs:
 
     - name: Get dependencies
       run: |
+        git config --global url."https://igorskh:${TOKEN}@github.com".insteadOf "https://github.com"
         go get -v -t -d ./...
         if [ -f Gopkg.toml ]; then
             curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
             dep ensure
         fi
+      env:
+        TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
     - name: Build
       run: go build -v .
