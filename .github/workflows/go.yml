@@ -49,8 +49,11 @@ jobs:
       working-directory: duolingo-api
       run: |
         npx prism mock swagger.yaml& PID=$!;
-        go test ../... -coverprofile=coverage.txt -covermode=atomic
+        go test ../... -coverprofile=../coverage.txt -covermode=atomic
         kill $PID
-        bash <(curl -s https://codecov.io/bash) -f coverage.txt
+
+    - name: Mock and Test
+      run: |
+        bash <(curl -s https://codecov.io/bash)
       env:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
