@@ -51,6 +51,6 @@ jobs:
         npx prism mock swagger.yaml& PID=$!;
         go test ../... -coverprofile=coverage.txt -covermode=atomic
         kill $PID
-        bash <(curl -s https://codecov.io/bash)
+        bash <(curl -s https://codecov.io/bash) -f coverage.txt
       env:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
