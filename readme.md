@@ -1,12 +1,11 @@
 # Golang Duolingo Unofficial API Implementation
 
-Work in progress.
-
 ## What is implemented?
 * Authentication
 * User data, including courses information and progress
 * Subscriptions (friends)
 * Leaderboards
+* XP Summaries
 
 ## Prepare
 Set your enviromental variables:
