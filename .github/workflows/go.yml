@@ -29,3 +29,12 @@ jobs:
 
     - name: Build
       run: go build -v .
+ 
+    - name: Use Node.js 12.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+
+    - name: Build API
+      working-directory: duolingo-api
+      run: npm install
