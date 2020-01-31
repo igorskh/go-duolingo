@@ -16,14 +16,6 @@ jobs:
     - name: Check out code into the Go module directory
       uses: actions/checkout@v2
 
-    - name: Checkout submodules
-      shell: bash
-      run: |
-        git config --global url."https://igorskh:${TOKEN}@github.com".insteadOf "https://github.com"
-        git submodule update --remote
-      env:
-        TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-
     - name: Get dependencies
       run: |
         git config --global url."https://igorskh:${TOKEN}@github.com".insteadOf "https://github.com"
@@ -37,6 +29,11 @@ jobs:
 
     - name: Build
       run: go build -v .
+      
+    - name: Checkout API
+      run: git clone https://igorskh:${TOKEN}@github.com/igorskh/duolingo-api.git
+      env:
+        TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
     - name: Use Node.js 12.x
       uses: actions/setup-node@v1
