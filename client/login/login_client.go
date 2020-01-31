@@ -29,7 +29,7 @@ PostLogin returns token in header
 
 Login user
 */
-func (a *Client) PostLogin(params *PostLoginParams, authInfo runtime.ClientAuthInfoWriter) (*PostLoginOK, error) {
+func (a *Client) PostLogin(params *PostLoginParams) (*PostLoginOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewPostLoginParams()
@@ -41,10 +41,9 @@ func (a *Client) PostLogin(params *PostLoginParams, authInfo runtime.ClientAuthI
 		PathPattern:        "/login",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"https"},
+		Schemes:            []string{"http", "https"},
 		Params:             params,
 		Reader:             &PostLoginReader{formats: a.formats},
-		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
 	})

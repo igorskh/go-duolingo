@@ -41,7 +41,7 @@ func (a *Client) GetLeaderboard(params *GetLeaderboardParams, authInfo runtime.C
 		PathPattern:        "/leaderboards/{leaderboardID}/users/{userID}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"https"},
+		Schemes:            []string{"http", "https"},
 		Params:             params,
 		Reader:             &GetLeaderboardReader{formats: a.formats},
 		AuthInfo:           authInfo,
