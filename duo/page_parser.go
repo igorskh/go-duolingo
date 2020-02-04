@@ -40,7 +40,7 @@ func ParseMainPage(url string) (*PageParseResult, error) {
 	}
 
 	leaderboardIDRe := regexp.MustCompile(`Le=\"([\S]+)\"`)
-	basePathRe := regexp.MustCompile(`Pn=N\(\"\/([\d-]+)\"`)
+	basePathRe := regexp.MustCompile(`Pn=\w\(\"\/([\d-]+)\"`)
 	leaderboardID := leaderboardIDRe.FindSubmatch(scriptCode)
 	basePath := basePathRe.FindSubmatch(scriptCode)
 
