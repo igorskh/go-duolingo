@@ -15,7 +15,7 @@ import (
 )
 
 // SubscriptionList subscription list
-// swagger:model SubscriptionList
+// swagger:model subscriptionList
 type SubscriptionList struct {
 
 	// subscriptions

@@ -12,7 +12,7 @@ import (
 )
 
 // XpSummary xp summary
-// swagger:model XpSummary
+// swagger:model xpSummary
 type XpSummary struct {
 
 	// daily goal xp

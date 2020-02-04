@@ -12,7 +12,7 @@ import (
 )
 
 // Course course
-// swagger:model Course
+// swagger:model course
 type Course struct {
 
 	// author Id

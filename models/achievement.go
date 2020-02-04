@@ -12,7 +12,7 @@ import (
 )
 
 // Achievement achievement
-// swagger:model Achievement
+// swagger:model achievement
 type Achievement struct {
 
 	// count

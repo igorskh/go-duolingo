@@ -12,7 +12,7 @@ import (
 )
 
 // ReferralInfo referral info
-// swagger:model ReferralInfo
+// swagger:model referralInfo
 type ReferralInfo struct {
 
 	// has reached cap

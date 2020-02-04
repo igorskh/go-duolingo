@@ -12,7 +12,7 @@ import (
 )
 
 // TrackingProperties tracking properties
-// swagger:model TrackingProperties
+// swagger:model trackingProperties
 type TrackingProperties struct {
 
 	// direction

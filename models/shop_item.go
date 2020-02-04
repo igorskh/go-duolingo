@@ -12,7 +12,7 @@ import (
 )
 
 // ShopItem shop item
-// swagger:model ShopItem
+// swagger:model shopItem
 type ShopItem struct {
 
 	// id

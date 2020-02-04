@@ -12,7 +12,7 @@ import (
 )
 
 // StreakData streak data
-// swagger:model StreakData
+// swagger:model streakData
 type StreakData struct {
 
 	// length

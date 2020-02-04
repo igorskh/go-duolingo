@@ -12,7 +12,7 @@ import (
 )
 
 // LastStreak last streak
-// swagger:model LastStreak
+// swagger:model lastStreak
 type LastStreak struct {
 
 	// days ago

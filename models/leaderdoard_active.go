@@ -15,7 +15,7 @@ import (
 )
 
 // LeaderdoardActive leaderdoard active
-// swagger:model LeaderdoardActive
+// swagger:model leaderdoardActive
 type LeaderdoardActive struct {
 
 	// cohort

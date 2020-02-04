@@ -12,7 +12,7 @@ import (
 )
 
 // SmartTip smart tip
-// swagger:model SmartTip
+// swagger:model smartTip
 type SmartTip struct {
 
 	// smart tip Id

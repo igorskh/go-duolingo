@@ -12,7 +12,7 @@ import (
 )
 
 // OptionalFeature optional feature
-// swagger:model OptionalFeature
+// swagger:model optionalFeature
 type OptionalFeature struct {
 
 	// id

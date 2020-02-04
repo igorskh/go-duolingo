@@ -12,7 +12,7 @@ import (
 )
 
 // ProgressQuizItem progress quiz item
-// swagger:model ProgressQuizItem
+// swagger:model progressQuizItem
 type ProgressQuizItem struct {
 
 	// end time

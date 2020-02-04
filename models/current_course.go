@@ -15,7 +15,7 @@ import (
 )
 
 // CurrentCourse current course
-// swagger:model CurrentCourse
+// swagger:model currentCourse
 type CurrentCourse struct {
 
 	// crowns

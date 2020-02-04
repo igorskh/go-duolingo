@@ -12,7 +12,7 @@ import (
 )
 
 // LoginData login data
-// swagger:model LoginData
+// swagger:model loginData
 type LoginData struct {
 
 	// distinct Id

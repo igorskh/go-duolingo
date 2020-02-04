@@ -15,7 +15,7 @@ import (
 )
 
 // UserList user list
-// swagger:model UserList
+// swagger:model userList
 type UserList struct {
 
 	// users

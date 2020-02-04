@@ -12,7 +12,7 @@ import (
 )
 
 // LeaderdoardRanking leaderdoard ranking
-// swagger:model LeaderdoardRanking
+// swagger:model leaderdoardRanking
 type LeaderdoardRanking struct {
 
 	// avatar url

@@ -12,7 +12,7 @@ import (
 )
 
 // XpGain xp gain
-// swagger:model XpGain
+// swagger:model xpGain
 type XpGain struct {
 
 	// event type

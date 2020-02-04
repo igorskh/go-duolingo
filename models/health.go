@@ -12,7 +12,7 @@ import (
 )
 
 // Health health
-// swagger:model Health
+// swagger:model health
 type Health struct {
 
 	// eligible for free refill

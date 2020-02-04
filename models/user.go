@@ -15,7 +15,7 @@ import (
 )
 
 // User user
-// swagger:model User
+// swagger:model user
 type User struct {
 
 	// achievements
