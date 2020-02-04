@@ -45,7 +45,7 @@ jobs:
       working-directory: duolingo-api
       run: |
         npm install
-        npm build
+        npm run-script build
 
     - name: Mock and Test
       working-directory: duolingo-api
