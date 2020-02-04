@@ -3,6 +3,12 @@
 ![](https://github.com/igorskh/go-duolingo/workflows/Go/badge.svg)
 [![codecov](https://codecov.io/gh/igorskh/go-duolingo/branch/master/graph/badge.svg?token=gwaNQFJ6Xi)](https://codecov.io/gh/igorskh/go-duolingo)
 
+## Description
+
+This is an unofficial API client in Go. Client stub is generate with codegen from [go-swagger](https://github.com/go-swagger/go-swagger) from [unofficial Duolingo OpenAPI specification](https://github.com/igorskh/duolingo-api). It can be used to generated code for many other languages. 
+
+Check out the [interactive API documentation](https://duolingo-api.roundeasy.now.sh/).
+
 ## What is implemented?
 * Authentication
 * User data, including courses information and progress
