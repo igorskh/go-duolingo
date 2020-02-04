@@ -17,7 +17,7 @@ Check out the [interactive API documentation](https://duolingo-api.roundeasy.now
 * XP Summaries
 
 ## Prepare
-Set your enviromental variables:
+Most of methods require authentication. One way is to provide token, which you get after login and set your enviromental variables:
 ```bash
 export DUO_TOKEN=<your_token_here>
 export DUO_USERNAME=<your_username_here>
@@ -27,6 +27,92 @@ Read them in Go:
 ```go
 token := os.Getenv("DUO_TOKEN")
 username := os.Getenv("DUO_USERNAME")
+```
+
+Advantage of this approach that you do not need to store your password anywhere. Also, token is stored only for the duration of the terminal session.
+
+## Usage
+Basic example [example2/main.go](example2/main.go) shows how to retrieve the user information and output userID by given username.
+```go
+package main
+
+import (
+	"fmt"
+	"os"
+	"time"
+
+	httptransport "github.com/go-openapi/runtime/client"
+	"github.com/go-openapi/strfmt"
+	"github.com/igorskh/go-duolingo/client"
+	"github.com/igorskh/go-duolingo/client/users"
+	"github.com/igorskh/go-duolingo/duo"
+)
+
+func main() {
+	token := os.Getenv("DUO_TOKEN")
+	username := os.Getenv("DUO_USERNAME")
+	baseURL := "www.duolingo.com"
+
+	pageParseRes, err := duo.ParseMainPage("https://" + baseURL)
+	if err != nil {
+		panic(err)
+	}
+
+	cl := client.New(httptransport.New(baseURL, pageParseRes.BasePath, nil), strfmt.Default)
+	auth := httptransport.BearerToken(token)
+
+	params := users.NewGetUsersParamsWithTimeout(5 * time.Second)
+	params.SetUsername(username)
+
+	resp, err := cl.Users.GetUsers(params, auth)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(resp.Payload.Users[0].ID)
+}
+
+```
+
+
+## High-level API Access
+Package `github.com/igorskh/go-duolingo/duo` is an additional layer of abstraction which simplifies access to the API functions.
+
+Example in [examples/main.go](example1/main.go) shows the process of retrieving userID, but using high-level client.
+```go
+package main
+
+import (
+	"fmt"
+	"os"
+
+	httptransport "github.com/go-openapi/runtime/client"
+	"github.com/go-openapi/strfmt"
+	"github.com/igorskh/go-duolingo/client"
+	"github.com/igorskh/go-duolingo/duo"
+)
+
+func main() {
+	token := os.Getenv("DUO_TOKEN")
+	username := os.Getenv("DUO_USERNAME")
+	baseURL := "www.duolingo.com"
+	lbBaseURL := "duolingo-leaderboards-prod.duolingo.com"
+
+	pageParseRes, err := duo.ParseMainPage("https://" + baseURL)
+	if err != nil {
+		panic(err)
+	}
+	duoClient := duo.Client{
+		Auth:     httptransport.BearerToken(token),
+		Client:   client.New(httptransport.New(baseURL, pageParseRes.BasePath, nil), strfmt.Default),
+		ClientLB: client.New(httptransport.New(lbBaseURL, "", nil), strfmt.Default),
+	}
+
+	myUser, err := duoClient.GetUser(username)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(myUser.ID)
+}
 ```
 
 ## Serialising to JSON
