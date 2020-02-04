@@ -43,7 +43,9 @@ jobs:
 
     - name: Build API
       working-directory: duolingo-api
-      run: npm install
+      run: |
+        npm install
+        npm build
 
     - name: Mock and Test
       working-directory: duolingo-api
