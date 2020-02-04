@@ -48,7 +48,7 @@ jobs:
     - name: Mock and Test
       working-directory: duolingo-api
       run: |
-        npx prism mock swagger.yaml& PID=$!;
+        npm mock& PID=$!;
         go test ../... -coverprofile=../coverage.txt -covermode=atomic
         kill $PID
 
