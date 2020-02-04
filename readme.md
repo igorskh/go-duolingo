@@ -1,5 +1,8 @@
 # Golang Duolingo Unofficial API Implementation
 
+![](https://github.com/igorskh/go-duolingo/workflows/Go/badge.svg)
+[![codecov](https://codecov.io/gh/igorskh/go-duolingo/branch/master/graph/badge.svg?token=gwaNQFJ6Xi)](https://codecov.io/gh/igorskh/go-duolingo)
+
 ## What is implemented?
 * Authentication
 * User data, including courses information and progress
