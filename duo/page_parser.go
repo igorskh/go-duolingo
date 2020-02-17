@@ -39,8 +39,8 @@ func ParseMainPage(url string) (*PageParseResult, error) {
 		return nil, err
 	}
 
-	leaderboardIDRe := regexp.MustCompile(`Le=\"([\S]+)\"`)
-	basePathRe := regexp.MustCompile(`Pn=\w\(\"\/([\d-]+)\"`)
+	leaderboardIDRe := regexp.MustCompile(`"https:\/\/duolingo-leaderboards-prod.duolingo.com"\),[\w=]+"(.+?)"`)
+	basePathRe := regexp.MustCompile(`\/(\d{4}-\d{2}-\d{2})`)
 	leaderboardID := leaderboardIDRe.FindSubmatch(scriptCode)
 	basePath := basePathRe.FindSubmatch(scriptCode)
 
