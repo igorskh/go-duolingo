@@ -8,9 +8,8 @@ package models
 import (
 	"strconv"
 
-	strfmt "github.com/go-openapi/strfmt"
-
 	"github.com/go-openapi/errors"
+	strfmt "github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 )
 
@@ -21,8 +20,14 @@ type LeaderdoardActive struct {
 	// cohort
 	Cohort *LeaderdoardActiveCohort `json:"cohort,omitempty"`
 
+	// collab goal achieved
+	CollabGoalAchieved bool `json:"collab_goal_achieved,omitempty"`
+
 	// complete
 	Complete bool `json:"complete,omitempty"`
+
+	// contest
+	Contest *LeaderboardContest `json:"contest,omitempty"`
 
 	// score
 	Score float64 `json:"score,omitempty"`
@@ -36,6 +41,10 @@ func (m *LeaderdoardActive) Validate(formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.validateCohort(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateContest(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -55,6 +64,24 @@ func (m *LeaderdoardActive) validateCohort(formats strfmt.Registry) error {
 		if err := m.Cohort.Validate(formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
 				return ve.ValidateName("cohort")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *LeaderdoardActive) validateContest(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.Contest) { // not required
+		return nil
+	}
+
+	if m.Contest != nil {
+		if err := m.Contest.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("contest")
 			}
 			return err
 		}

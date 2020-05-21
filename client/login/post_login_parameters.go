@@ -16,7 +16,7 @@ import (
 
 	strfmt "github.com/go-openapi/strfmt"
 
-	models "github.com/igorskh/go-duolingo/models"
+	"github.com/igorskh/go-duolingo/models"
 )
 
 // NewPostLoginParams creates a new PostLoginParams object

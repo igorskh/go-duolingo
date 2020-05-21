@@ -13,7 +13,7 @@ import (
 
 	strfmt "github.com/go-openapi/strfmt"
 
-	models "github.com/igorskh/go-duolingo/models"
+	"github.com/igorskh/go-duolingo/models"
 )
 
 // GetLeaderboardReader is a Reader for the GetLeaderboard structure.
@@ -61,7 +61,7 @@ func NewGetLeaderboardOK() *GetLeaderboardOK {
 
 /*GetLeaderboardOK handles this case with default header values.
 
-A Users object.
+A Leaderboard object.
 */
 type GetLeaderboardOK struct {
 	Payload *models.Leaderdoard

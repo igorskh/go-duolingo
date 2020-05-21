@@ -7,12 +7,11 @@ package users
 
 import (
 	"github.com/go-openapi/runtime"
-
-	strfmt "github.com/go-openapi/strfmt"
+	"github.com/go-openapi/strfmt"
 )
 
 // New creates a new users API client.
-func New(transport runtime.ClientTransport, formats strfmt.Registry) *Client {
+func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -24,10 +23,23 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
-/*
-GetSubscriptions returns user subscription list
+// ClientService is the interface for Client methods
+type ClientService interface {
+	GetSubscriptions(params *GetSubscriptionsParams, authInfo runtime.ClientAuthInfoWriter) (*GetSubscriptionsOK, error)
 
-User subscription.
+	GetUser(params *GetUserParams, authInfo runtime.ClientAuthInfoWriter) (*GetUserOK, error)
+
+	GetUsers(params *GetUsersParams, authInfo runtime.ClientAuthInfoWriter) (*GetUsersOK, error)
+
+	GetXpSummaries(params *GetXpSummariesParams, authInfo runtime.ClientAuthInfoWriter) (*GetXpSummariesOK, error)
+
+	SetTransport(transport runtime.ClientTransport)
+}
+
+/*
+  GetSubscriptions returns user subscription list
+
+  User subscription.
 */
 func (a *Client) GetSubscriptions(params *GetSubscriptionsParams, authInfo runtime.ClientAuthInfoWriter) (*GetSubscriptionsOK, error) {
 	// TODO: Validate the params before sending
@@ -61,9 +73,9 @@ func (a *Client) GetSubscriptions(params *GetSubscriptionsParams, authInfo runti
 }
 
 /*
-GetUser returns user information
+  GetUser returns user information
 
-User information.
+  User information.
 */
 func (a *Client) GetUser(params *GetUserParams, authInfo runtime.ClientAuthInfoWriter) (*GetUserOK, error) {
 	// TODO: Validate the params before sending
@@ -97,9 +109,9 @@ func (a *Client) GetUser(params *GetUserParams, authInfo runtime.ClientAuthInfoW
 }
 
 /*
-GetUsers returns user information when not logged in
+  GetUsers returns user information when not logged in
 
-User information when not logged in.
+  User information when not logged in.
 */
 func (a *Client) GetUsers(params *GetUsersParams, authInfo runtime.ClientAuthInfoWriter) (*GetUsersOK, error) {
 	// TODO: Validate the params before sending
@@ -133,9 +145,9 @@ func (a *Client) GetUsers(params *GetUsersParams, authInfo runtime.ClientAuthInf
 }
 
 /*
-GetXpSummaries returns user x p summaries
+  GetXpSummaries returns user x p summaries
 
-User summaries.
+  User summaries.
 */
 func (a *Client) GetXpSummaries(params *GetXpSummariesParams, authInfo runtime.ClientAuthInfoWriter) (*GetXpSummariesOK, error) {
 	// TODO: Validate the params before sending

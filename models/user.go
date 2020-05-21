@@ -8,9 +8,8 @@ package models
 import (
 	"strconv"
 
-	strfmt "github.com/go-openapi/strfmt"
-
 	"github.com/go-openapi/errors"
+	strfmt "github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 )
 
@@ -19,7 +18,7 @@ import (
 type User struct {
 
 	// achievements
-	Achievements []*Achievement `json:"_achievements"`
+	Achievements []*UserAchievementsItems0 `json:"_achievements"`
 
 	// ads enabled
 	AdsEnabled bool `json:"adsEnabled,omitempty"`
@@ -119,6 +118,9 @@ type User struct {
 
 	// has plus
 	HasPlus bool `json:"hasPlus,omitempty"`
+
+	// has recent activity15
+	HasRecentActivity15 bool `json:"hasRecentActivity15,omitempty"`
 
 	// health
 	Health *Health `json:"health,omitempty"`
@@ -508,6 +510,49 @@ func (m *User) MarshalBinary() ([]byte, error) {
 // UnmarshalBinary interface implementation
 func (m *User) UnmarshalBinary(b []byte) error {
 	var res User
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*m = res
+	return nil
+}
+
+// UserAchievementsItems0 user achievements items0
+// swagger:model UserAchievementsItems0
+type UserAchievementsItems0 struct {
+
+	// count
+	Count int64 `json:"count,omitempty"`
+
+	// name
+	Name string `json:"name,omitempty"`
+
+	// should show unlock
+	ShouldShowUnlock bool `json:"shouldShowUnlock,omitempty"`
+
+	// tier
+	Tier int64 `json:"tier,omitempty"`
+
+	// tier counts
+	TierCounts []int64 `json:"tierCounts"`
+}
+
+// Validate validates this user achievements items0
+func (m *UserAchievementsItems0) Validate(formats strfmt.Registry) error {
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (m *UserAchievementsItems0) MarshalBinary() ([]byte, error) {
+	if m == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(m)
+}
+
+// UnmarshalBinary interface implementation
+func (m *UserAchievementsItems0) UnmarshalBinary(b []byte) error {
+	var res UserAchievementsItems0
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err
 	}

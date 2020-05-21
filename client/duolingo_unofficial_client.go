@@ -6,13 +6,15 @@ package client
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	"github.com/go-openapi/runtime"
 	httptransport "github.com/go-openapi/runtime/client"
 
-	strfmt "github.com/go-openapi/strfmt"
+	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 
+	"github.com/igorskh/go-duolingo/client/achievements"
 	"github.com/igorskh/go-duolingo/client/leaderboards"
 	"github.com/igorskh/go-duolingo/client/login"
+	"github.com/igorskh/go-duolingo/client/shop"
 	"github.com/igorskh/go-duolingo/client/users"
 )
 
@@ -58,13 +60,11 @@ func New(transport runtime.ClientTransport, formats strfmt.Registry) *DuolingoUn
 
 	cli := new(DuolingoUnofficial)
 	cli.Transport = transport
-
+	cli.Achievements = achievements.New(transport, formats)
 	cli.Leaderboards = leaderboards.New(transport, formats)
-
 	cli.Login = login.New(transport, formats)
-
+	cli.Shop = shop.New(transport, formats)
 	cli.Users = users.New(transport, formats)
-
 	return cli
 }
 
@@ -109,11 +109,15 @@ func (cfg *TransportConfig) WithSchemes(schemes []string) *TransportConfig {
 
 // DuolingoUnofficial is a client for duolingo unofficial
 type DuolingoUnofficial struct {
-	Leaderboards *leaderboards.Client
+	Achievements achievements.ClientService
 
-	Login *login.Client
+	Leaderboards leaderboards.ClientService
 
-	Users *users.Client
+	Login login.ClientService
+
+	Shop shop.ClientService
+
+	Users users.ClientService
 
 	Transport runtime.ClientTransport
 }
@@ -121,11 +125,9 @@ type DuolingoUnofficial struct {
 // SetTransport changes the transport on the client and all its subresources
 func (c *DuolingoUnofficial) SetTransport(transport runtime.ClientTransport) {
 	c.Transport = transport
-
+	c.Achievements.SetTransport(transport)
 	c.Leaderboards.SetTransport(transport)
-
 	c.Login.SetTransport(transport)
-
+	c.Shop.SetTransport(transport)
 	c.Users.SetTransport(transport)
-
 }
