@@ -6,6 +6,7 @@ import (
 	"github.com/go-openapi/runtime"
 	"github.com/igorskh/go-duolingo/client"
 	"github.com/igorskh/go-duolingo/client/leaderboards"
+	"github.com/igorskh/go-duolingo/client/shop"
 	"github.com/igorskh/go-duolingo/client/users"
 	"github.com/igorskh/go-duolingo/models"
 )
@@ -61,6 +62,17 @@ func (c Client) GetLeaderboards(lbID string, userID int64) (*models.Leaderdoard,
 	params.SetLeaderboardID(lbID)
 
 	resp, err := c.ClientLB.Leaderboards.GetLeaderboard(params, c.Auth)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Payload, nil
+}
+
+// GetShopItems get available shop items
+func (c Client) GetShopItems() (*models.ShopItemList, error) {
+	params := shop.NewGetShopItemListParamsWithTimeout(5 * time.Second)
+
+	resp, err := c.Client.Shop.GetShopItemList(params, c.Auth)
 	if err != nil {
 		return nil, err
 	}
