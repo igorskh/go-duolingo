@@ -5,6 +5,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 	"github.com/igorskh/go-duolingo/client"
+	"github.com/igorskh/go-duolingo/client/achievements"
 	"github.com/igorskh/go-duolingo/client/leaderboards"
 	"github.com/igorskh/go-duolingo/client/shop"
 	"github.com/igorskh/go-duolingo/client/users"
@@ -13,9 +14,10 @@ import (
 
 // Client client for accessing Duolingo API
 type Client struct {
-	Client   *client.DuolingoUnofficial
-	ClientLB *client.DuolingoUnofficial
-	Auth     runtime.ClientAuthInfoWriter
+	Client    *client.DuolingoUnofficial
+	ClientLB  *client.DuolingoUnofficial
+	ClientACH *client.DuolingoUnofficial
+	Auth      runtime.ClientAuthInfoWriter
 }
 
 // GetUser gets user info without authentication
@@ -90,4 +92,48 @@ func (c Client) GetXpSummaries(userID int64, timezone string) ([]*models.XpSumma
 		return nil, err
 	}
 	return resp.Payload.Summaries, nil
+}
+
+// GetAchievements gets user achievements
+func (c Client) GetAchievements(
+	userID int64,
+	fromLanguage string,
+	learningLanguage string,
+	hasPlus bool,
+	isAgeRestricted bool,
+	isProfilePublic bool,
+	isSchools bool) (*models.Achievements, error) {
+	params := achievements.NewGetAchievementsParamsWithTimeout(5 * time.Second)
+	params.SetUserID(userID)
+	params.SetFromLanguage(fromLanguage)
+	params.SetLearningLanguage(learningLanguage)
+
+	falseVal := int64(0)
+	trueVal := int64(1)
+	if hasPlus {
+		params.SetHasPlus(&trueVal)
+	} else {
+		params.SetHasPlus(&falseVal)
+	}
+	if isAgeRestricted {
+		params.SetIsAgeRestricted(&trueVal)
+	} else {
+		params.SetIsAgeRestricted(&falseVal)
+	}
+	if isProfilePublic {
+		params.SetIsProfilePublic(&trueVal)
+	} else {
+		params.SetIsProfilePublic(&falseVal)
+	}
+	if isSchools {
+		params.SetIsSchools(&trueVal)
+	} else {
+		params.SetIsSchools(&falseVal)
+	}
+
+	resp, err := c.ClientACH.Achievements.GetAchievements(params, c.Auth)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Payload, nil
 }
