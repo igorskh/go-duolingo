@@ -51,7 +51,7 @@ jobs:
         go test ../... -coverprofile=../coverage.txt -covermode=atomic
         kill $PID
 
-    - name: Mock and Test
+    - name: Upload coverage report
       run: |
         bash <(curl -s https://codecov.io/bash)
       env:
