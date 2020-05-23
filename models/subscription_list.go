@@ -8,9 +8,8 @@ package models
 import (
 	"strconv"
 
-	strfmt "github.com/go-openapi/strfmt"
-
 	"github.com/go-openapi/errors"
+	strfmt "github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 )
 
@@ -20,6 +19,9 @@ type SubscriptionList struct {
 
 	// subscriptions
 	Subscriptions []*User `json:"subscriptions"`
+
+	// total subscriptions
+	TotalSubscriptions int64 `json:"totalSubscriptions,omitempty"`
 }
 
 // Validate validates this subscription list

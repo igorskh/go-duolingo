@@ -6,9 +6,8 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	strfmt "github.com/go-openapi/strfmt"
-
 	"github.com/go-openapi/errors"
+	strfmt "github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 )
 
@@ -18,6 +17,9 @@ type Leaderdoard struct {
 
 	// active
 	Active *LeaderdoardActive `json:"active,omitempty"`
+
+	// leaderboard
+	Leaderboard *LeaderdoardLeaderboard `json:"leaderboard,omitempty"`
 
 	// num sessions remaining to unlock
 	NumSessionsRemainingToUnlock int64 `json:"num_sessions_remaining_to_unlock,omitempty"`
@@ -31,6 +33,10 @@ func (m *Leaderdoard) Validate(formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.validateActive(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateLeaderboard(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -58,6 +64,24 @@ func (m *Leaderdoard) validateActive(formats strfmt.Registry) error {
 	return nil
 }
 
+func (m *Leaderdoard) validateLeaderboard(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.Leaderboard) { // not required
+		return nil
+	}
+
+	if m.Leaderboard != nil {
+		if err := m.Leaderboard.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("leaderboard")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
 // MarshalBinary interface implementation
 func (m *Leaderdoard) MarshalBinary() ([]byte, error) {
 	if m == nil {
@@ -69,6 +93,89 @@ func (m *Leaderdoard) MarshalBinary() ([]byte, error) {
 // UnmarshalBinary interface implementation
 func (m *Leaderdoard) UnmarshalBinary(b []byte) error {
 	var res Leaderdoard
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*m = res
+	return nil
+}
+
+// LeaderdoardLeaderboard leaderdoard leaderboard
+// swagger:model LeaderdoardLeaderboard
+type LeaderdoardLeaderboard struct {
+
+	// active contest
+	ActiveContest *LeaderdoardActive `json:"active_contest,omitempty"`
+
+	// ruleset
+	Ruleset *LeaderboradContestRuleset `json:"ruleset,omitempty"`
+}
+
+// Validate validates this leaderdoard leaderboard
+func (m *LeaderdoardLeaderboard) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.validateActiveContest(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateRuleset(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *LeaderdoardLeaderboard) validateActiveContest(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.ActiveContest) { // not required
+		return nil
+	}
+
+	if m.ActiveContest != nil {
+		if err := m.ActiveContest.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("leaderboard" + "." + "active_contest")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *LeaderdoardLeaderboard) validateRuleset(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.Ruleset) { // not required
+		return nil
+	}
+
+	if m.Ruleset != nil {
+		if err := m.Ruleset.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("leaderboard" + "." + "ruleset")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (m *LeaderdoardLeaderboard) MarshalBinary() ([]byte, error) {
+	if m == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(m)
+}
+
+// UnmarshalBinary interface implementation
+func (m *LeaderdoardLeaderboard) UnmarshalBinary(b []byte) error {
+	var res LeaderdoardLeaderboard
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err
 	}

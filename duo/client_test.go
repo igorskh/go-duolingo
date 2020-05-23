@@ -11,9 +11,10 @@ import (
 var baseURL = "localhost:4010"
 
 var duoClient = Client{
-	Auth:     httptransport.BearerToken("token"),
-	Client:   client.New(httptransport.New(baseURL, "", []string{"http"}), strfmt.Default),
-	ClientLB: client.New(httptransport.New(baseURL, "", []string{"http"}), strfmt.Default),
+	Auth:      httptransport.BearerToken("token"),
+	Client:    client.New(httptransport.New(baseURL, "", []string{"http"}), strfmt.Default),
+	ClientLB:  client.New(httptransport.New(baseURL, "", []string{"http"}), strfmt.Default),
+	ClientACH: client.New(httptransport.New(baseURL, "", []string{"http"}), strfmt.Default),
 }
 
 func TestUser(t *testing.T) {
@@ -42,6 +43,20 @@ func TestXpSummaries(t *testing.T) {
 }
 func TestLeaderboards(t *testing.T) {
 	_, err := duoClient.GetLeaderboards("any", 1234)
+	if err != nil {
+		t.Error(err)
+	}
+}
+
+func TestAchievements(t *testing.T) {
+	_, err := duoClient.GetAchievements(1234, "de", "ru", true, false, false, false)
+	if err != nil {
+		t.Error(err)
+	}
+}
+
+func TestShopItems(t *testing.T) {
+	_, err := duoClient.GetShopItems()
 	if err != nil {
 		t.Error(err)
 	}
