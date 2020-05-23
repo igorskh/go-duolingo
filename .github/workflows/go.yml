@@ -17,7 +17,6 @@ jobs:
       run: |
         git config --global url."https://igorskh:${TOKEN}@github.com".insteadOf "https://github.com"
         git config --global url."https://igorskh:${TOKEN}@github.com/".insteadOf "git@github.com:"
-        go get github.com/${{ github.repository }}@${{ github.sha }}
         go get -v -t ./...
         if [ -f Gopkg.toml ]; then
             curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
