@@ -14,20 +14,23 @@ import (
 // swagger:model shopItem
 type ShopItem struct {
 
+	// currency type
+	CurrencyType string `json:"currencyType,omitempty"`
+
 	// id
 	ID string `json:"id,omitempty"`
 
-	// item name
-	ItemName string `json:"itemName,omitempty"`
+	// localized description
+	LocalizedDescription string `json:"localizedDescription,omitempty"`
 
-	// purchase date
-	PurchaseDate int64 `json:"purchaseDate,omitempty"`
+	// name
+	Name string `json:"name,omitempty"`
 
-	// purchase Id
-	PurchaseID string `json:"purchaseId,omitempty"`
+	// price
+	Price int64 `json:"price,omitempty"`
 
-	// purchase price
-	PurchasePrice int64 `json:"purchasePrice,omitempty"`
+	// type
+	Type string `json:"type,omitempty"`
 }
 
 // Validate validates this shop item
