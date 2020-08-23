@@ -23,6 +23,9 @@ type User struct {
 	// ads enabled
 	AdsEnabled bool `json:"adsEnabled,omitempty"`
 
+	// auto update preloaded courses
+	AutoUpdatePreloadedCourses bool `json:"autoUpdatePreloadedCourses,omitempty"`
+
 	// bio
 	Bio string `json:"bio,omitempty"`
 
@@ -43,6 +46,9 @@ type User struct {
 
 	// creation date
 	CreationDate int64 `json:"creationDate,omitempty"`
+
+	// currency reward bundles
+	CurrencyRewardBundles []*CurrencyRewardBundle `json:"currencyRewardBundles"`
 
 	// current course
 	CurrentCourse *CurrentCourse `json:"currentCourse,omitempty"`
@@ -67,6 +73,9 @@ type User struct {
 
 	// email classroom join
 	EmailClassroomJoin bool `json:"emailClassroomJoin,omitempty"`
+
+	// email clubs
+	EmailClubs bool `json:"emailClubs,omitempty"`
 
 	// email edit suggested
 	EmailEditSuggested bool `json:"emailEditSuggested,omitempty"`
@@ -103,6 +112,9 @@ type User struct {
 
 	// gems
 	Gems int64 `json:"gems,omitempty"`
+
+	// gems config
+	GemsConfig *GemsConfig `json:"gemsConfig,omitempty"`
 
 	// google Id
 	GoogleID string `json:"googleId,omitempty"`
@@ -198,13 +210,16 @@ type User struct {
 	Roles []string `json:"roles"`
 
 	// shop items
-	ShopItems []*ShopItem `json:"shopItems"`
+	ShopItems []*ShopItemPurchasedList `json:"shopItems"`
 
 	// streak
 	Streak int64 `json:"streak,omitempty"`
 
 	// streak data
 	StreakData *StreakData `json:"streakData,omitempty"`
+
+	// timer boost config
+	TimerBoostConfig *TimerBoostConfig `json:"timerBoostConfig,omitempty"`
 
 	// timezone
 	Timezone string `json:"timezone,omitempty"`
@@ -246,7 +261,15 @@ func (m *User) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
+	if err := m.validateCurrencyRewardBundles(formats); err != nil {
+		res = append(res, err)
+	}
+
 	if err := m.validateCurrentCourse(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateGemsConfig(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -271,6 +294,10 @@ func (m *User) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateStreakData(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateTimerBoostConfig(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -334,6 +361,31 @@ func (m *User) validateCourses(formats strfmt.Registry) error {
 	return nil
 }
 
+func (m *User) validateCurrencyRewardBundles(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.CurrencyRewardBundles) { // not required
+		return nil
+	}
+
+	for i := 0; i < len(m.CurrencyRewardBundles); i++ {
+		if swag.IsZero(m.CurrencyRewardBundles[i]) { // not required
+			continue
+		}
+
+		if m.CurrencyRewardBundles[i] != nil {
+			if err := m.CurrencyRewardBundles[i].Validate(formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("currencyRewardBundles" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
 func (m *User) validateCurrentCourse(formats strfmt.Registry) error {
 
 	if swag.IsZero(m.CurrentCourse) { // not required
@@ -344,6 +396,24 @@ func (m *User) validateCurrentCourse(formats strfmt.Registry) error {
 		if err := m.CurrentCourse.Validate(formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
 				return ve.ValidateName("currentCourse")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *User) validateGemsConfig(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.GemsConfig) { // not required
+		return nil
+	}
+
+	if m.GemsConfig != nil {
+		if err := m.GemsConfig.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("gemsConfig")
 			}
 			return err
 		}
@@ -466,6 +536,24 @@ func (m *User) validateStreakData(formats strfmt.Registry) error {
 		if err := m.StreakData.Validate(formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
 				return ve.ValidateName("streakData")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *User) validateTimerBoostConfig(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.TimerBoostConfig) { // not required
+		return nil
+	}
+
+	if m.TimerBoostConfig != nil {
+		if err := m.TimerBoostConfig.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("timerBoostConfig")
 			}
 			return err
 		}

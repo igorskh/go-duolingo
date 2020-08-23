@@ -13,16 +13,16 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// ShopItemList shop item list
-// swagger:model shopItemList
-type ShopItemList struct {
+// ShopItemPurchasedList shop item purchased list
+// swagger:model shopItemPurchasedList
+type ShopItemPurchasedList struct {
 
 	// shop items
-	ShopItems []*ShopItem `json:"shopItems"`
+	ShopItems []*ShopItemPurchased `json:"shopItems"`
 }
 
-// Validate validates this shop item list
-func (m *ShopItemList) Validate(formats strfmt.Registry) error {
+// Validate validates this shop item purchased list
+func (m *ShopItemPurchasedList) Validate(formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.validateShopItems(formats); err != nil {
@@ -35,7 +35,7 @@ func (m *ShopItemList) Validate(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *ShopItemList) validateShopItems(formats strfmt.Registry) error {
+func (m *ShopItemPurchasedList) validateShopItems(formats strfmt.Registry) error {
 
 	if swag.IsZero(m.ShopItems) { // not required
 		return nil
@@ -61,7 +61,7 @@ func (m *ShopItemList) validateShopItems(formats strfmt.Registry) error {
 }
 
 // MarshalBinary interface implementation
-func (m *ShopItemList) MarshalBinary() ([]byte, error) {
+func (m *ShopItemPurchasedList) MarshalBinary() ([]byte, error) {
 	if m == nil {
 		return nil, nil
 	}
@@ -69,8 +69,8 @@ func (m *ShopItemList) MarshalBinary() ([]byte, error) {
 }
 
 // UnmarshalBinary interface implementation
-func (m *ShopItemList) UnmarshalBinary(b []byte) error {
-	var res ShopItemList
+func (m *ShopItemPurchasedList) UnmarshalBinary(b []byte) error {
+	var res ShopItemPurchasedList
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err
 	}
